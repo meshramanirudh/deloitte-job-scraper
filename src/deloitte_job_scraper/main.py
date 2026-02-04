@@ -1,4 +1,4 @@
-from job_links import getJobLinks
+from deloitte_job_scraper.job_links import getJobLinks
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
