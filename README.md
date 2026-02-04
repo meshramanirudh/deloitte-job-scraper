@@ -1,4 +1,4 @@
-A Python project which scrapes all the job listings from Deloitte USI Career page.
+A Python project which scrapes all the job listings from [Deloitte USI Career page](https://usijobs.deloitte.com/en_US/careersUSI/).
 
 ## Prerequisites
 - Python `3.10+`
