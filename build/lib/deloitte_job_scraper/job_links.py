@@ -27,6 +27,7 @@ def getJobLinks() -> list[str]:
             ):
                 links.append(str(jobLink.get("href")))
 
+        break
         # Progress
         sys.stdout.write(f"\r Gathering Links : {len(links)}/{noOfJobs}")
         sys.stdout.flush()

@@ -1,0 +1,12 @@
+LICENSE
+README.md
+pyproject.toml
+src/deloitte_job_scraper/__init__.py
+src/deloitte_job_scraper/job_links.py
+src/deloitte_job_scraper/main.py
+src/deloitte_job_scraper.egg-info/PKG-INFO
+src/deloitte_job_scraper.egg-info/SOURCES.txt
+src/deloitte_job_scraper.egg-info/dependency_links.txt
+src/deloitte_job_scraper.egg-info/entry_points.txt
+src/deloitte_job_scraper.egg-info/requires.txt
+src/deloitte_job_scraper.egg-info/top_level.txt
