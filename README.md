@@ -12,7 +12,8 @@ cd deloitte-job-scraper
 python3 -m venv venv # Create a virtual environment
 source bin/activate/activate # for Linux
 pip install . # Install project dependencies
-# pip install -e .   For installing and editing:
+# Or for installing and editing:
+# pip install -e .
 ```
 
 ## Usage
