@@ -1,0 +1,13 @@
+[project]
+name = "deloitte-job-scrapper"
+description = "A Python project which scrapes all the job listings from Deloitte USI Career page."
+authors = [{ name="Anirudh Meshram", email="meshramanirudh.work@gmail.com" }]
+dependencies = [
+  "requests",
+  "beautifulsoup4",
+  "lxml",
+  "pandas"
+]
+
+[project.scripts]
+deloitte-job-scrapper = "deloitte_job_scrapper.main:main"
