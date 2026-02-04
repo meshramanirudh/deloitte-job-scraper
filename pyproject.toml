@@ -1,5 +1,6 @@
 [project]
 name = "deloitte-job-scrapper"
+version = 0.1.0
 description = "A Python project which scrapes all the job listings from Deloitte USI Career page."
 authors = [{ name="Anirudh Meshram", email="meshramanirudh.work@gmail.com" }]
 dependencies = [
