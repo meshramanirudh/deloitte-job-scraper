@@ -2,7 +2,7 @@
 
 **What is this Project?**
 
-`deloitte-job-scraper` is a Python based CLI tool that scrapes job listings from the [Deloitte USI Careers Page]() and exports them into a structured CSV file for easy analysis and filtering.
+`deloitte-job-scraper` is a Python based CLI tool that scrapes job listings from the [Deloitte USI Careers Page](https://usijobs.deloitte.com/en_US/careersusi) and exports them into a structured CSV file for easy analysis and filtering.
 
 **What problem does this project solve?**
 
