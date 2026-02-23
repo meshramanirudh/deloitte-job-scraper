@@ -14,10 +14,22 @@ def main():
         soup = BeautifulSoup(page.text, "lxml")
 
         jobDescriptionIdentifier = "container--boxed"
-        jobDescription = soup.find("div", class_="container--boxed").text
+        jobDescription = soup.find("div", class_=jobDescriptionIdentifier).text
 
         jobTitleIdentifier = "article__header__text__title--4"
         jobTitle = soup.find("h2", class_=jobTitleIdentifier).text
+
+        jobLocationsIdentifier = "article__header--locations"
+        jobLocations = (
+            str(soup.find("div", class_=jobLocationsIdentifier).text)
+            .strip("\n")
+            .split("\n")
+        )
+
+        if len(jobLocations) != 1:
+            jobLocations = ";".join(jobLocations)
+        else:
+            jobLocations = jobLocations[0]
 
         # Job Requisition Code
         jobCode = str(link[link.rfind("/") + 1 :])
@@ -25,6 +37,7 @@ def main():
         jobs[jobCode] = {
             "jobTitle": jobTitle.strip(),
             "jobDescription": jobDescription.strip(),
+            "jobLocations": jobLocations.strip(),
             "jobApplyLink": f"https://usijobs.deloitte.com/en_US/careersUSI/Login?jobId={jobCode}",
         }
 
