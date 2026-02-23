@@ -55,7 +55,7 @@ Saved deloitte_jobs.csv in path/to/your/project_installation
 - [ ] Need to use `job_links` as a generator for `main` to reduce the turnaround time.
 - [ ] Remove white-spaces and other non-printable characters from the texts before exporting.
 - [ ] Update `README.md`
-- [ ] Extract {City, State} for each job opening.
+- [x] Extract {City, State} for each job opening.
 
 > [!CAUTION]
 > This project is for educational purposes only. It demonstrates web scraping techniques using public web pages. The author does not distribute, or claim ownership of any scraped data. Users are responsible for complying with the terms of service of the websites they access.
