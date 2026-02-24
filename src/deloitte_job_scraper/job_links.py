@@ -38,6 +38,6 @@ def getJobLinks() -> list[str]:
         # Progress
         sys.stdout.write(f"\r Gathering Links : {len(links)}/{noOfJobs}")
         sys.stdout.flush()
-        print("Some jobs were already present in the database") if flag else print()
+    print("Some jobs were already present in the database") if flag else print()
 
     return links
