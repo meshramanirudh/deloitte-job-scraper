@@ -10,6 +10,11 @@ def main():
 
     links = getJobLinks()
     jobs = dict()
+    file_path = f"{os.path.abspath('.')}/deloitte_jobs.csv"
+
+    df_exists = False
+    if os.path.exists(file_path):
+        df_exists = True
 
     for link in links:
         page = requests.get(link)
@@ -52,10 +57,19 @@ def main():
     print()
 
     filename = "deloitte_jobs"
-    pd.DataFrame(jobs).T.reset_index().rename(columns={"index": "jobId"}).to_csv(
-        f"{os.path.abspath('.')}/{filename}.csv", index=False
-    )
-    print(f"Saved {filename}.csv in {os.path.abspath('../../')}")
+
+    if df_exists:
+        pd.concat(
+            [
+                pd.read_csv(file_path),
+                pd.DataFrame(jobs).T.reset_index().rename(columns={"index": "jobId"}),
+            ]
+        ).to_csv(f"{os.path.abspath('.')}/{filename}.csv", index=False)
+    else:
+        pd.DataFrame(jobs).T.reset_index().rename(columns={"index": "jobId"}).to_csv(
+            f"{os.path.abspath('.')}/{filename}.csv", index=False
+        )
+    print(f"Saved {filename}.csv in {os.path.abspath('.')}")
 
 
 if __name__ == "__main__":

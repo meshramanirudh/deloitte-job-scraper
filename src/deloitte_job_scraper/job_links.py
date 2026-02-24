@@ -11,10 +11,11 @@ import os
 def getJobLinks() -> list[str]:
     links = []
     link = "https://usijobs.deloitte.com/en_US/careersUSI/SearchJobs/?jobRecordsPerPage=10&jobOffset="
-
+    file_path = f"{os.path.abspath('.')}/deloitte_jobs.csv"
     df_exists = False
-    if os.path.exists("../../deloitte_jobs.csv"):
-        df = pd.read_csv("../../deloitte_jobs.csv")
+    if os.path.exists(file_path):
+        df = pd.read_csv(file_path)
+        print(df)
         df_exists = True
 
     response = requests.get(link)
