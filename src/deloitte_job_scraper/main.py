@@ -6,6 +6,8 @@ def main():
     import sys
     import os
 
+    print(f"Output directory : {os.path.abspath('.')}")
+
     links = getJobLinks()
     jobs = dict()
 
@@ -51,7 +53,7 @@ def main():
 
     filename = "deloitte_jobs"
     pd.DataFrame(jobs).T.reset_index().rename(columns={"index": "jobId"}).to_csv(
-        f"{os.path.abspath('.')}/../../{filename}.csv", index=False
+        f"{os.path.abspath('.')}/{filename}.csv", index=False
     )
     print(f"Saved {filename}.csv in {os.path.abspath('../../')}")
 
