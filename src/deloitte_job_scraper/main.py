@@ -38,7 +38,7 @@ def main():
             "jobTitle": jobTitle.strip(),
             "jobDescription": jobDescription.strip(),
             "jobLocations": jobLocations.strip(),
-            "jobApplyLink": f"https://usijobs.deloitte.com/en_US/careersUSI/Login?jobId={jobCode}",
+            "jobApplyLink": f"{link}",
         }
 
         # Progress
@@ -54,7 +54,7 @@ def main():
         f"../../{filename}.csv", index=False
     )
 
-    print(f"Saved {filename}.csv in {os.path.abspath('.')}")
+    print(f"Saved {filename}.csv in {os.path.abspath('../../')}")
 
 
 if __name__ == "__main__":
