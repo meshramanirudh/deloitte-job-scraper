@@ -15,7 +15,6 @@ def getJobLinks() -> list[str]:
     df_exists = False
     if os.path.exists(file_path):
         df = pd.read_csv(file_path)
-        print(df)
         df_exists = True
 
     response = requests.get(link)
