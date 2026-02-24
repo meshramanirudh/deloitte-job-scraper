@@ -5,12 +5,17 @@ from bs4 import BeautifulSoup
 import math
 import sys
 import pandas as pd
+import os
 
 
 def getJobLinks() -> list[str]:
     links = []
     link = "https://usijobs.deloitte.com/en_US/careersUSI/SearchJobs/?jobRecordsPerPage=10&jobOffset="
-    df = pd.read_csv("../../deloitte_jobs.csv")
+
+    df_exists = False
+    if os.path.exists("../../deloitte_jobs.csv"):
+        df = pd.read_csv("../../deloitte_jobs.csv")
+        df_exists = True
 
     response = requests.get(link)
     soup = BeautifulSoup(response.text, "lxml")
@@ -29,8 +34,9 @@ def getJobLinks() -> list[str]:
             if jobLink.startswith(
                 "https://usijobs.deloitte.com/en_US/careersUSI/JobDetail/"
             ):
-                if not (df.jobApplyLink == jobLink).any():
-                    links.append(jobLink)
+                if df_exists:
+                    if not (df.jobApplyLink == jobLink).any():
+                        links.append(jobLink)
 
         # Progress
         sys.stdout.write(f"\r Gather Links : {i}")
