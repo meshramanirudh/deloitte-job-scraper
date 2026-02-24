@@ -4,11 +4,14 @@ import requests
 from bs4 import BeautifulSoup
 import math
 import sys
+import pandas as pd
 
 
 def getJobLinks() -> list[str]:
     links = []
     link = "https://usijobs.deloitte.com/en_US/careersUSI/SearchJobs/?jobRecordsPerPage=10&jobOffset="
+    df = pd.read_csv("../../deloitte_jobs.csv")
+
     response = requests.get(link)
     soup = BeautifulSoup(response.text, "lxml")
     noOfJobs = int(soup.find("span", class_="jobListTotalRecords").text)
@@ -18,18 +21,23 @@ def getJobLinks() -> list[str]:
     # Find all job links
 
     for i in range(0, (math.floor(noOfJobs / 10) * 10) + 1, 10):
+        flag = False
         response = requests.get(link + str(i))
         soup = BeautifulSoup(response.text, "lxml")
         linksOnPage = soup.find_all("a", class_="link")
         for jobLink in linksOnPage:
-            if str(jobLink.get("href")).startswith(
+            jobLink = str(jobLink.get("href"))
+            if jobLink.startswith(
                 "https://usijobs.deloitte.com/en_US/careersUSI/JobDetail/"
             ):
-                links.append(str(jobLink.get("href")))
+                if (df.jobApplyLink == jobLink).any():
+                    flag = True
+                else:
+                    links.append(jobLink)
 
         # Progress
         sys.stdout.write(f"\r Gathering Links : {len(links)}/{noOfJobs}")
         sys.stdout.flush()
+        print("Some jobs were already present in the database") if flag else print()
 
-    print()
     return links
