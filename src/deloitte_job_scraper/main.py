@@ -51,9 +51,8 @@ def main():
 
     filename = "deloitte_jobs"
     pd.DataFrame(jobs).T.reset_index().rename(columns={"index": "jobId"}).to_csv(
-        f"../../{filename}.csv", index=False
+        f"{os.path.abspath('.')}/../../{filename}.csv", index=False
     )
-
     print(f"Saved {filename}.csv in {os.path.abspath('../../')}")
 
 
