@@ -33,11 +33,11 @@ def getJobLinks() -> list[str]:
                     links.append(jobLink)
 
         # Progress
-        sys.stdout.write(f"\r Gathering Links : {len(links)}/{noOfJobs}")
+        sys.stdout.write(f"\r Gather Links : {i}")
         sys.stdout.flush()
 
     print(
-        f"Skipped {noOfJobs - len(links)} links which were already present in the database"
+        f"\nSkipped {noOfJobs - len(links)} links which were already present in the database"
     )
 
     return links

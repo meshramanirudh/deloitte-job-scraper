@@ -40,7 +40,7 @@ deloitte-job-scraper
 ```
 Found X jobs.
 	
-	Gathering Links : ABC/XYZ
+	Gathering Links : ABC
 	Details for Job ID 123456 added : ABC/XYZ
 
 Saved deloitte_jobs.csv in path/to/your/project_installation
