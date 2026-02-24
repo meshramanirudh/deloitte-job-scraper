@@ -21,7 +21,6 @@ def getJobLinks() -> list[str]:
     # Find all job links
 
     for i in range(0, (math.floor(noOfJobs / 10) * 10) + 1, 10):
-        flag = False
         response = requests.get(link + str(i))
         soup = BeautifulSoup(response.text, "lxml")
         linksOnPage = soup.find_all("a", class_="link")
@@ -30,14 +29,15 @@ def getJobLinks() -> list[str]:
             if jobLink.startswith(
                 "https://usijobs.deloitte.com/en_US/careersUSI/JobDetail/"
             ):
-                if (df.jobApplyLink == jobLink).any():
-                    flag = True
-                else:
+                if not (df.jobApplyLink == jobLink).any():
                     links.append(jobLink)
 
         # Progress
         sys.stdout.write(f"\r Gathering Links : {len(links)}/{noOfJobs}")
         sys.stdout.flush()
-    print("Some jobs were already present in the database") if flag else print()
+
+    print(
+        f"Skipped {noOfJobs - len(links)} links which were already present in the database"
+    )
 
     return links
