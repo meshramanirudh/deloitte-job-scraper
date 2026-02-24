@@ -20,8 +20,8 @@ def getJobLinks() -> list[str]:
     for i in range(0, (math.floor(noOfJobs / 10) * 10) + 1, 10):
         response = requests.get(link + str(i))
         soup = BeautifulSoup(response.text, "lxml")
-        jobsOnPage = soup.find_all("a", class_="link")
-        for jobLink in jobsOnPage:
+        linksOnPage = soup.find_all("a", class_="link")
+        for jobLink in linksOnPage:
             if str(jobLink.get("href")).startswith(
                 "https://usijobs.deloitte.com/en_US/careersUSI/JobDetail/"
             ):
