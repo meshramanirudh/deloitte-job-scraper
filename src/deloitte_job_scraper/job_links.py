@@ -44,6 +44,6 @@ def getJobLinks() -> list[str]:
 
     print(
         f"\nSkipped {noOfJobs - len(links)} links which were already present in the database"
-    )
+    ) if noOfJobs != len(links) else print()
 
     return links
