@@ -1,21 +1,33 @@
-# Module responsible for generating an exhaustive list of all the jobs listed on usijobs.deloitte.com
+"""Module responsible for generating an exhaustive list of all the jobs listed on usijobs.deloitte.com"""
 
 import requests
 from bs4 import BeautifulSoup
 import math
+from itertools import batched
+from concurrent.futures import ThreadPoolExecutor
 import sys
-import pandas as pd
-import os
+
+
+def _get_job_links(link) -> list[str]:
+    links = []
+    response = requests.get(
+        "https://usijobs.deloitte.com/en_US/careersUSI/SearchJobs/?jobRecordsPerPage=10&jobOffset="
+        + str(link)
+    )
+    soup = BeautifulSoup(response.text, "lxml")
+    linksOnPage = soup.find_all("a", class_="link")
+    for jobLink in linksOnPage:
+        jobLink = str(jobLink.get("href"))
+        if jobLink.startswith(
+            "https://usijobs.deloitte.com/en_US/careersUSI/JobDetail/"
+        ):
+            links.append(jobLink)
+    return links
 
 
 def getJobLinks() -> list[str]:
     links = []
     link = "https://usijobs.deloitte.com/en_US/careersUSI/SearchJobs/?jobRecordsPerPage=10&jobOffset="
-    file_path = f"{os.path.abspath('.')}/deloitte_jobs.csv"
-    df_exists = False
-    if os.path.exists(file_path):
-        df = pd.read_csv(file_path)
-        df_exists = True
 
     response = requests.get(link)
     soup = BeautifulSoup(response.text, "lxml")
@@ -25,25 +37,16 @@ def getJobLinks() -> list[str]:
 
     # Find all job links
 
-    for i in range(0, (math.floor(noOfJobs / 10) * 10) + 1, 10):
-        response = requests.get(link + str(i))
-        soup = BeautifulSoup(response.text, "lxml")
-        linksOnPage = soup.find_all("a", class_="link")
-        for jobLink in linksOnPage:
-            jobLink = str(jobLink.get("href"))
-            if jobLink.startswith(
-                "https://usijobs.deloitte.com/en_US/careersUSI/JobDetail/"
-            ):
-                if df_exists:
-                    if not (df.jobApplyLink == jobLink).any():
-                        links.append(jobLink)
+    pages = range(0, (math.floor(noOfJobs / 10) * 10) + 1, 10)
+    MAX_THREADS = 10
 
-        # Progress
-        sys.stdout.write(f"\r Gather Links : {i}")
-        sys.stdout.flush()
-
-    print(
-        f"\nSkipped {noOfJobs - len(links)} links which were already present in the database"
-    ) if noOfJobs != len(links) else print()
+    for _pages in batched(pages, MAX_THREADS):
+        with ThreadPoolExecutor(max_workers=MAX_THREADS) as exec:
+            futures = [exec.submit(_get_job_links, page) for page in _pages]
+            results = [f.result() for f in futures]
+            for result in results:
+                links.extend(result)
+                sys.stdout.write(f"\rLinks added : {len(links)}")
+                sys.stdout.flush()
 
     return links
