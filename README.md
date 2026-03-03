@@ -56,7 +56,7 @@ Saved deloitte_jobs.csv in path/to/your/project_installation
 - [x] Update `README.md`
 - [x] Extract {City, State} for each job opening.
 - [ ] Remove white-spaces and other non-printable characters from the texts before exporting.
-- [ ] Omit links which are already present in the database
+- [x] Omit links which are already present in the database
 - [ ] Include date while adding a job to the database (for tracking)
 
 > [!CAUTION]

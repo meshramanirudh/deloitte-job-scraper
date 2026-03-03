@@ -7,8 +7,13 @@ import sys
 import os
 from concurrent.futures import ThreadPoolExecutor
 
+df = pd.read_csv("deloitte_jobs.csv")
+
 
 def _get_job_detail(link) -> tuple[str, dict] | None:
+    global df
+    if df.jobApplyLink[df.jobApplyLink == link].any():
+        return
     try:
         _job_details = dict()
         page = requests.get(link)
@@ -67,9 +72,16 @@ def getDetails(links: list[str]):
 
 def export_csv(jobs: dict) -> None:
     filename = "deloitte_jobs.csv"
-    pd.DataFrame(jobs).T.reset_index().rename(columns={"index": "jobId"}).to_csv(
-        filename, index=False
-    )
+    if os.path.isfile(filename):
+        df = pd.read_csv(filename)
+        df = pd.concat(
+            [df, pd.DataFrame(jobs).T.reset_index().rename(columns={"index": "jobId"})]
+        )
+        df.to_csv(filename, index=False)
+    else:
+        pd.DataFrame(jobs).T.reset_index().rename(columns={"index": "jobId"}).to_csv(
+            filename, index=False
+        )
 
     print(f"\nSaved {filename} in {os.path.abspath('.')}")
 
