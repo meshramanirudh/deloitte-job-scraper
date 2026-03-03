@@ -57,7 +57,7 @@ Saved deloitte_jobs.csv in path/to/your/project_installation
 - [x] Extract {City, State} for each job opening.
 - [ ] Remove white-spaces and other non-printable characters from the texts before exporting.
 - [x] Omit links which are already present in the database
-- [ ] Include date while adding a job to the database (for tracking)
+- [x] Include date while adding a job to the database (for tracking)
 
 > [!CAUTION]
 > This project is for educational purposes only. It demonstrates web scraping techniques using public web pages. The author does not distribute, or claim ownership of any scraped data. Users are responsible for complying with the terms of service of the websites they access.
