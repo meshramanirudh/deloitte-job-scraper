@@ -1,3 +1,4 @@
+import datetime
 from itertools import batched
 from deloitte_job_scraper.job_links import getJobLinks
 import requests
@@ -7,13 +8,14 @@ import sys
 import os
 from concurrent.futures import ThreadPoolExecutor
 
-df = pd.read_csv("deloitte_jobs.csv")
+df = pd.read_csv("deloitte_jobs.csv") if os.path.isfile("deloitte_jobs.csv") else None
 
 
 def _get_job_detail(link) -> tuple[str, dict] | None:
     global df
-    if df.jobApplyLink[df.jobApplyLink == link].any():
-        return
+    if df:
+        if df.jobApplyLink[df.jobApplyLink == link].any():
+            return
     try:
         _job_details = dict()
         page = requests.get(link)
@@ -45,6 +47,7 @@ def _get_job_detail(link) -> tuple[str, dict] | None:
             "jobDescription": jobDescription.strip(),
             "jobLocations": jobLocations.strip(),
             "jobApplyLink": f"{link}",
+            "addedOn": datetime.datetime.now(),
         }
 
         # Progress
@@ -58,7 +61,7 @@ def _get_job_detail(link) -> tuple[str, dict] | None:
 def getDetails(links: list[str]):
     """Loop through all the links and scrape the relevant information"""
     jobs = dict()
-    MAX_THREADS = 10
+    MAX_THREADS = os.cpu_count() * 2
 
     for _links in batched(links, MAX_THREADS):
         with ThreadPoolExecutor(max_workers=MAX_THREADS) as exec:

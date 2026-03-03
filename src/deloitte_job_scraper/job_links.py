@@ -6,6 +6,7 @@ import math
 from itertools import batched
 from concurrent.futures import ThreadPoolExecutor
 import sys
+import os
 
 
 def _get_job_links(link) -> list[str]:
@@ -38,7 +39,7 @@ def getJobLinks() -> list[str]:
     # Find all job links
 
     pages = range(0, (math.floor(noOfJobs / 10) * 10) + 1, 10)
-    MAX_THREADS = 10
+    MAX_THREADS = os.cpu_count() * 2
 
     for _pages in batched(pages, MAX_THREADS):
         with ThreadPoolExecutor(max_workers=MAX_THREADS) as exec:
