@@ -11,9 +11,9 @@ from concurrent.futures import ThreadPoolExecutor
 df = pd.read_csv("deloitte_jobs.csv") if os.path.isfile("deloitte_jobs.csv") else None
 
 
-def _get_job_detail(link) -> tuple[str, dict] | None:
+def _get_job_detail(link: str) -> tuple[str, dict] | None:
     global df
-    if df:
+    if df is not None and not df.empty:
         if df.jobApplyLink[df.jobApplyLink == link].any():
             return
     try:
@@ -22,17 +22,17 @@ def _get_job_detail(link) -> tuple[str, dict] | None:
         soup = BeautifulSoup(page.text, "lxml")
 
         jobDescriptionIdentifier = "container--boxed"
-        jobDescription = soup.find("div", class_=jobDescriptionIdentifier).text
+        jobDescription = soup.find("div", class_=jobDescriptionIdentifier)
+        jobDescription = jobDescription.text if jobDescription is not None else ""
 
         jobTitleIdentifier = "article__header__text__title--4"
-        jobTitle = soup.find("h2", class_=jobTitleIdentifier).text
+        jobTitle = soup.find("h2", class_=jobTitleIdentifier)
+        jobTitle = jobTitle.text if jobTitle is not None else ""
 
         jobLocationsIdentifier = "article__header--locations"
-        jobLocations = (
-            str(soup.find("div", class_=jobLocationsIdentifier).text)
-            .strip("\n")
-            .split("\n")
-        )
+        jobLocations = soup.find("div", class_=jobLocationsIdentifier)
+        jobLocations = jobLocations.text if jobLocations is not None else ""
+        jobLocations = jobLocations.strip("\n").split("\n")
 
         if len(jobLocations) != 1:
             jobLocations = ";".join(jobLocations)
@@ -61,7 +61,7 @@ def _get_job_detail(link) -> tuple[str, dict] | None:
 def getDetails(links: list[str]):
     """Loop through all the links and scrape the relevant information"""
     jobs = dict()
-    MAX_THREADS = os.cpu_count() * 2
+    MAX_THREADS = (os.cpu_count() or 10) * 2
 
     for _links in batched(links, MAX_THREADS):
         with ThreadPoolExecutor(max_workers=MAX_THREADS) as exec:

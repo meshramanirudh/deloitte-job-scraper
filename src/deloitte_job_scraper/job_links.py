@@ -32,14 +32,15 @@ def getJobLinks() -> list[str]:
 
     response = requests.get(link)
     soup = BeautifulSoup(response.text, "lxml")
-    noOfJobs = int(soup.find("span", class_="jobListTotalRecords").text)
+    noOfJobs = soup.find("span", class_="jobListTotalRecords")
+    noOfJobs = int(noOfJobs.text) if noOfJobs is not None else 0
 
     print(f"Found {noOfJobs} jobs.")
 
     # Find all job links
 
     pages = range(0, (math.floor(noOfJobs / 10) * 10) + 1, 10)
-    MAX_THREADS = os.cpu_count() * 2
+    MAX_THREADS = (os.cpu_count() or 10) * 2
 
     for _pages in batched(pages, MAX_THREADS):
         with ThreadPoolExecutor(max_workers=MAX_THREADS) as exec:
