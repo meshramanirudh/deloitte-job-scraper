@@ -11,7 +11,7 @@ from concurrent.futures import ThreadPoolExecutor
 df = pd.read_csv("deloitte_jobs.csv") if os.path.isfile("deloitte_jobs.csv") else None
 
 
-def _get_job_detail(link: str) -> tuple[str, dict] | None:
+def _get_job_detail(link: str) -> tuple[str, dict[str, str | datetime.datetime]] | None:
     global df
     if df is not None and not df.empty:
         if df.jobApplyLink[df.jobApplyLink == link].any():
@@ -73,7 +73,7 @@ def getDetails(links: list[str]):
     export_csv(jobs)
 
 
-def export_csv(jobs: dict) -> None:
+def export_csv(jobs: dict[int, str | datetime.datetime]) -> None:
     output_directory = os.path.abspath(
         os.path.join(os.path.dirname(__file__), "..", "..")
     )

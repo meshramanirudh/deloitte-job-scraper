@@ -9,8 +9,8 @@ import sys
 import os
 
 
-def _get_job_links(link) -> list[str]:
-    links = []
+def _get_job_links(link: str) -> list[str]:
+    links: list[str] = []
     response = requests.get(
         "https://usijobs.deloitte.com/en_US/careersUSI/SearchJobs/?jobRecordsPerPage=10&jobOffset="
         + str(link)
@@ -27,7 +27,7 @@ def _get_job_links(link) -> list[str]:
 
 
 def getJobLinks() -> list[str]:
-    links = []
+    links: list[str] = []
     link = "https://usijobs.deloitte.com/en_US/careersUSI/SearchJobs/?jobRecordsPerPage=10&jobOffset="
 
     response = requests.get(link)
@@ -44,7 +44,7 @@ def getJobLinks() -> list[str]:
 
     for _pages in batched(pages, MAX_THREADS):
         with ThreadPoolExecutor(max_workers=MAX_THREADS) as exec:
-            futures = [exec.submit(_get_job_links, page) for page in _pages]
+            futures = [exec.submit(_get_job_links, str(page)) for page in _pages]
             results = [f.result() for f in futures]
             for result in results:
                 links.extend(result)
