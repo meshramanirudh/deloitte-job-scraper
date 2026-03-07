@@ -74,27 +74,32 @@ def getDetails(links: list[str]):
 
 
 def export_csv(jobs: dict) -> None:
+    output_directory = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "..")
+    )
     filename = "deloitte_jobs.csv"
     if os.path.isfile(filename):
         df = pd.read_csv(filename)
         df = pd.concat(
             [df, pd.DataFrame(jobs).T.reset_index().rename(columns={"index": "jobId"})]
         )
-        df.to_csv(filename, index=False)
+        df.to_csv(f"{output_directory}/{filename}", index=False)
     else:
         pd.DataFrame(jobs).T.reset_index().rename(columns={"index": "jobId"}).to_csv(
-            filename, index=False
+            f"{output_directory}/{filename}", index=False
         )
 
-    print(f"\nSaved {filename} in {os.path.abspath('.')}")
+    print(f"\nSaved {filename} in {output_directory}")
 
 
 def main():
-    print(f"Output directory : {os.path.abspath('.')}")
+    print(
+        f"Output directory : {os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))}"
+    )
 
     links = getJobLinks()
     getDetails(links)
 
 
 if __name__ == "__main__":
-    main()
+    print(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
