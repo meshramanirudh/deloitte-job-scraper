@@ -9,11 +9,11 @@ import sys
 import os
 
 
-def _get_job_links(link: str) -> list[str]:
+def _get_job_links(page: str) -> list[str]:
     links: list[str] = []
     response = requests.get(
         "https://usijobs.deloitte.com/en_US/careersUSI/SearchJobs/?jobRecordsPerPage=10&jobOffset="
-        + str(link)
+        + page
     )
     soup = BeautifulSoup(response.text, "lxml")
     linksOnPage = soup.find_all("a", class_="link")
